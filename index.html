@@ -1,0 +1,4125 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>NIGHT BOSS — Ночной клуб</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+:root{
+  --bg:#08070c;
+  --panel:#121019;
+  --panel2:#181520;
+  --panel3:#201b29;
+  --line:#2c2636;
+  --text:#f8f4fa;
+  --muted:#91899b;
+  --pink:#ff3fa4;
+  --violet:#875cff;
+  --gold:#ffc857;
+  --green:#45df91;
+  --red:#ff5570;
+  --blue:#4eb7ff;
+}
+
+html,body{
+  margin:0;
+  padding:0;
+  min-height:100%;
+  background:
+    radial-gradient(circle at 15% 0%,rgba(135,92,255,.20),transparent 30%),
+    radial-gradient(circle at 90% 10%,rgba(255,63,164,.15),transparent 30%),
+    var(--bg);
+  color:var(--text);
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+button,input,select{
+  font:inherit;
+}
+
+button{
+  -webkit-user-select:none;
+  user-select:none;
+}
+
+.app{
+  min-height:100vh;
+}
+
+/* ================= SIDEBAR ================= */
+
+.sidebar{
+  width:250px;
+  position:fixed;
+  inset:0 auto 0 0;
+  z-index:30;
+  background:rgba(12,10,17,.97);
+  border-right:1px solid var(--line);
+  padding:18px 13px;
+}
+
+.logo{
+  padding:7px 12px 22px;
+}
+
+.logo h1{
+  margin:0;
+  font-size:24px;
+  letter-spacing:2px;
+}
+
+.logo h1 span{
+  color:var(--pink);
+}
+
+.logo small{
+  color:var(--muted);
+  display:block;
+  margin-top:4px;
+}
+
+.nav{
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+}
+
+.nav button{
+  border:0;
+  background:transparent;
+  color:#aaa2b3;
+  padding:12px 13px;
+  border-radius:12px;
+  text-align:left;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.nav button:hover,
+.nav button.active{
+  color:#fff;
+  background:linear-gradient(
+    90deg,
+    rgba(255,63,164,.18),
+    rgba(135,92,255,.12)
+  );
+}
+
+.nav button b{
+  display:inline-block;
+  width:27px;
+}
+
+.sidebar-bottom{
+  position:absolute;
+  left:13px;
+  right:13px;
+  bottom:17px;
+}
+
+/* ================= MAIN ================= */
+
+.main{
+  margin-left:250px;
+  min-height:100vh;
+}
+
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:20;
+  height:72px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 26px;
+  background:rgba(8,7,12,.84);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--line);
+}
+
+.club-name{
+  font-size:18px;
+  font-weight:900;
+}
+
+.club-name small{
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+  font-weight:500;
+  margin-top:3px;
+}
+
+.wallet{
+  display:flex;
+  gap:8px;
+}
+
+.money{
+  padding:9px 13px;
+  border-radius:10px;
+  background:#15121d;
+  border:1px solid var(--line);
+  color:var(--gold);
+  font-weight:900;
+}
+
+.rep{
+  color:#ff6ab7;
+}
+
+.level{
+  color:#8c72ff;
+}
+
+/* ================= CONTENT ================= */
+
+.content{
+  width:min(1500px,100%);
+  margin:auto;
+  padding:26px;
+}
+
+.page{
+  display:none;
+  animation:fade .22s ease;
+}
+
+.page.active{
+  display:block;
+}
+
+@keyframes fade{
+  from{
+    opacity:0;
+    transform:translateY(5px);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+.hero{
+  min-height:300px;
+  padding:35px;
+  border-radius:23px;
+  overflow:hidden;
+  position:relative;
+  border:1px solid var(--line);
+  background:
+    linear-gradient(90deg,rgba(8,6,12,.97),rgba(8,6,12,.52)),
+    radial-gradient(
+      circle at 82% 45%,
+      #55205f,
+      #1c1024 42%,
+      #0d0912 75%
+    );
+}
+
+.hero:before{
+  content:"";
+  position:absolute;
+  width:360px;
+  height:360px;
+  right:3%;
+  top:-35px;
+  border-radius:50%;
+  background:radial-gradient(
+    circle,
+    rgba(255,63,164,.25),
+    transparent 65%
+  );
+  filter:blur(10px);
+}
+
+.hero-content{
+  position:relative;
+  z-index:2;
+  max-width:750px;
+}
+
+.hero h2{
+  font-size:44px;
+  line-height:1.05;
+  margin:0 0 13px;
+}
+
+.hero p{
+  max-width:700px;
+  color:#c5bdca;
+  line-height:1.65;
+}
+
+.pink{
+  color:#ff65b5;
+}
+
+.actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+  margin-top:20px;
+}
+
+/* ================= BUTTONS ================= */
+
+.btn{
+  border:1px solid #393143;
+  border-radius:11px;
+  padding:10px 15px;
+  color:#fff;
+  background:#25212e;
+  cursor:pointer;
+  transition:.18s;
+}
+
+.btn:hover{
+  transform:translateY(-1px);
+  border-color:#5b5068;
+}
+
+.btn:active{
+  transform:scale(.97);
+}
+
+.btn.primary{
+  border:0;
+  font-weight:800;
+  background:linear-gradient(135deg,#ff3fa4,#875cff);
+}
+
+.btn.gold{
+  border:0;
+  color:#1c1305;
+  font-weight:900;
+  background:linear-gradient(135deg,#d99a2b,#ffc857);
+}
+
+.btn.green{
+  border:0;
+  font-weight:800;
+  color:#06180f;
+  background:linear-gradient(135deg,#45df91,#8af3ba);
+}
+
+.btn.danger{
+  color:#ff8395;
+  background:#341722;
+}
+
+/* ================= CARDS ================= */
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+  margin-top:18px;
+}
+
+.card{
+  background:
+    linear-gradient(
+      145deg,
+      rgba(25,21,32,.98),
+      rgba(15,13,21,.98)
+    );
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:17px;
+}
+
+.card h3,
+.card h4{
+  margin-top:0;
+}
+
+.stat{
+  color:var(--muted);
+  font-size:12px;
+}
+
+.stat-value{
+  font-size:27px;
+  font-weight:900;
+  margin-top:5px;
+}
+
+.good{
+  color:var(--green);
+}
+
+.bad{
+  color:var(--red);
+}
+
+.goldtext{
+  color:var(--gold);
+}
+
+.bluetext{
+  color:var(--blue);
+}
+
+.section-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin:30px 0 12px;
+}
+
+.section-title h2,
+.section-title h3{
+  margin:0;
+}
+
+.section-title span{
+  color:var(--muted);
+  font-size:12px;
+}
+
+/* ================= PROGRESS ================= */
+
+.progress{
+  height:7px;
+  margin:7px 0 12px;
+  overflow:hidden;
+  border-radius:10px;
+  background:#29232f;
+}
+
+.progress i{
+  display:block;
+  height:100%;
+  border-radius:10px;
+  background:linear-gradient(90deg,var(--pink),var(--violet));
+}
+
+/* ================= DASHBOARD ================= */
+
+.quick-actions{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin-top:15px;
+}
+
+.quick{
+  min-height:125px;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.quick:hover{
+  transform:translateY(-2px);
+}
+
+.quick-icon{
+  font-size:34px;
+  margin-bottom:9px;
+}
+
+/* ================= STAFF ================= */
+
+.staff-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
+}
+
+.person{
+  position:relative;
+  overflow:hidden;
+}
+
+.avatar{
+  height:125px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:13px;
+  margin-bottom:13px;
+  font-size:62px;
+  background:
+    radial-gradient(
+      circle at 50% 20%,
+      rgba(255,63,164,.25),
+      transparent 50%
+    ),
+    linear-gradient(145deg,#34243f,#17121e);
+}
+
+.person h4{
+  font-size:18px;
+  margin-bottom:3px;
+}
+
+.role{
+  color:#aaa1b2;
+  font-size:12px;
+}
+
+.tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px;
+  margin:10px 0;
+}
+
+.tag{
+  padding:4px 8px;
+  border-radius:20px;
+  background:#211d29;
+  border:1px solid #332c3d;
+  color:#c9bfd1;
+  font-size:10px;
+}
+
+/* ================= ROOMS ================= */
+
+.rooms{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
+}
+
+.room{
+  min-height:200px;
+}
+
+.room-icon{
+  font-size:45px;
+}
+
+.room p{
+  color:var(--muted);
+  line-height:1.55;
+  font-size:12px;
+}
+
+/* ================= BAR ================= */
+
+.bar-layout{
+  display:grid;
+  grid-template-columns:1.4fr .8fr;
+  gap:15px;
+}
+
+.menu-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  padding:15px 0;
+  border-bottom:1px solid var(--line);
+}
+
+.menu-item:last-child{
+  border-bottom:0;
+}
+
+.menu-item small{
+  color:var(--muted);
+}
+
+.bar-status{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  margin-top:14px;
+}
+
+/* ================= MUSIC ================= */
+
+.music-player{
+  background:
+    radial-gradient(
+      circle at 90% 20%,
+      rgba(255,63,164,.18),
+      transparent 35%
+    ),
+    #15121d;
+}
+
+.album{
+  height:170px;
+  border-radius:15px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:70px;
+  margin-bottom:15px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,63,164,.45),
+      rgba(135,92,255,.45)
+    );
+}
+
+.track{
+  font-size:18px;
+  font-weight:900;
+}
+
+.artist{
+  color:var(--muted);
+  font-size:12px;
+  margin-top:3px;
+}
+
+.music-controls{
+  display:flex;
+  gap:8px;
+  margin-top:15px;
+}
+
+.range{
+  width:100%;
+  margin-top:15px;
+}
+
+/* ================= GUESTS ================= */
+
+.guest-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+}
+
+.guest{
+  min-height:150px;
+}
+
+.guest-icon{
+  font-size:38px;
+}
+
+.guest-status{
+  margin-top:8px;
+  font-size:11px;
+  color:var(--muted);
+}
+
+/* ================= RELATIONSHIPS ================= */
+
+.relationship{
+  position:relative;
+}
+
+.heart-meter{
+  font-size:12px;
+  color:#ff69b8;
+}
+
+.quote{
+  min-height:55px;
+  color:#c9bfce;
+  font-size:13px;
+  line-height:1.55;
+  font-style:italic;
+}
+
+/* ================= MISSIONS ================= */
+
+.mission{
+  position:relative;
+}
+
+.reward{
+  color:var(--gold);
+  font-weight:800;
+  font-size:13px;
+}
+
+/* ================= TABLE ================= */
+
+.table-wrap{
+  overflow-x:auto;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:650px;
+}
+
+th,
+td{
+  padding:13px 10px;
+  border-bottom:1px solid var(--line);
+  text-align:left;
+  font-size:13px;
+}
+
+th{
+  color:var(--muted);
+  font-size:11px;
+  text-transform:uppercase;
+}
+
+/* ================= LOG ================= */
+
+.log{
+  max-height:500px;
+  overflow:auto;
+}
+
+.log-item{
+  padding:12px 0;
+  border-bottom:1px solid var(--line);
+  font-size:13px;
+}
+
+.log-item span{
+  display:block;
+  color:var(--muted);
+  font-size:10px;
+  margin-top:3px;
+}
+
+/* ================= DIALOG ================= */
+
+.dialog{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  background:rgba(0,0,0,.78);
+  backdrop-filter:blur(9px);
+}
+
+.dialog.show{
+  display:flex;
+}
+
+.dialog-box{
+  width:min(650px,100%);
+  max-height:90vh;
+  overflow:auto;
+  padding:24px;
+  border-radius:20px;
+  border:1px solid #413548;
+  background:#15121d;
+  box-shadow:0 30px 100px #000;
+}
+
+.dialog-box h2{
+  margin-top:0;
+}
+
+.dialog-text{
+  color:#c9c0ce;
+  line-height:1.7;
+  margin:15px 0;
+}
+
+.dialog-buttons{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+/* ================= TOAST ================= */
+
+.toast{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  z-index:200;
+  max-width:340px;
+  padding:13px 16px;
+  border:1px solid #3a3045;
+  border-radius:12px;
+  background:#191522;
+  box-shadow:0 15px 50px #000;
+  transform:translateY(100px);
+  opacity:0;
+  transition:.3s;
+}
+
+.toast.show{
+  opacity:1;
+  transform:none;
+}
+
+/* ================= MOBILE ================= */
+
+.mobile-nav{
+  display:none;
+}
+
+@media(max-width:1100px){
+  .grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .staff-grid,
+  .rooms{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .guest-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .quick-actions{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+@media(max-width:900px){
+
+  .sidebar{
+    display:none;
+  }
+
+  .main{
+    margin-left:0;
+    padding-bottom:70px;
+  }
+
+  .topbar{
+    height:62px;
+    padding:0 13px;
+  }
+
+  .content{
+    padding:14px;
+  }
+
+  .hero{
+    padding:23px;
+    min-height:320px;
+  }
+
+  .hero h2{
+    font-size:32px;
+  }
+
+  .bar-layout{
+    grid-template-columns:1fr;
+  }
+
+  .mobile-nav{
+    display:flex;
+    position:fixed;
+    z-index:50;
+    left:0;
+    right:0;
+    bottom:0;
+    height:66px;
+    align-items:center;
+    justify-content:space-around;
+    background:rgba(12,10,17,.97);
+    backdrop-filter:blur(16px);
+    border-top:1px solid var(--line);
+  }
+
+  .mobile-nav button{
+    border:0;
+    background:transparent;
+    color:#958a9e;
+    font-size:10px;
+  }
+
+  .mobile-nav button b{
+    display:block;
+    font-size:19px;
+    margin-bottom:2px;
+  }
+
+  .mobile-nav button.active{
+    color:#ff5caf;
+  }
+}
+
+@media(max-width:600px){
+
+  .grid,
+  .staff-grid,
+  .rooms,
+  .guest-grid{
+    grid-template-columns:1fr;
+  }
+
+  .quick-actions{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .card{
+    padding:14px;
+  }
+
+  .stat-value{
+    font-size:22px;
+  }
+
+  .club-name{
+    font-size:14px;
+  }
+
+  .club-name small{
+    font-size:9px;
+  }
+
+  .wallet{
+    gap:3px;
+  }
+
+  .money{
+    padding:7px 8px;
+    font-size:11px;
+  }
+
+  .wallet .rep,
+  .wallet .level{
+    display:none;
+  }
+
+  .hero{
+    min-height:350px;
+  }
+
+  .hero h2{
+    font-size:29px;
+  }
+
+  .actions .btn{
+    width:100%;
+  }
+
+  .menu-item{
+    align-items:flex-start;
+  }
+
+  .toast{
+    right:10px;
+    left:10px;
+    bottom:78px;
+    max-width:none;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- ================= SIDEBAR ================= -->
+
+<aside class="sidebar">
+
+  <div class="logo">
+    <h1>NIGHT<span>BOSS</span></h1>
+    <small>симулятор ночного клуба</small>
+  </div>
+
+  <nav class="nav">
+
+    <button class="active" onclick="openPage('club',this)">
+      🏠 <b></b>Клуб
+    </button>
+
+    <button onclick="openPage('bar',this)">
+      🍸 <b></b>Бар
+    </button>
+
+    <button onclick="openPage('music',this)">
+      🎵 <b></b>Музыка
+    </button>
+
+    <button onclick="openPage('guests',this)">
+      👥 <b></b>Гости
+    </button>
+
+    <button onclick="openPage('staff',this)">
+      💃 <b></b>Персонал
+    </button>
+
+    <button onclick="openPage('rooms',this)">
+      🌙 <b></b>Зоны клуба
+    </button>
+
+    <button onclick="openPage('relationships',this)">
+      ❤️ <b></b>Отношения
+    </button>
+
+    <button onclick="openPage('upgrades',this)">
+      ⚡ <b></b>Развитие
+    </button>
+
+    <button onclick="openPage('missions',this)">
+      📋 <b></b>Задания
+    </button>
+
+    <button onclick="openPage('stats',this)">
+      📊 <b></b>Статистика
+    </button>
+
+    <button onclick="openPage('journal',this)">
+      📜 <b></b>Журнал
+    </button>
+
+  </nav>
+
+  <div class="sidebar-bottom">
+
+    <div class="card">
+
+      <div class="stat">
+        Владелец
+      </div>
+
+      <strong>
+        Босс клуба
+      </strong>
+
+      <div class="progress">
+        <i id="bossProgress" style="width:36%"></i>
+      </div>
+
+      <small class="stat">
+        Уровень <span id="levelSide">4</span>
+      </small>
+
+    </div>
+
+  </div>
+
+</aside>
+
+<!-- ================= MAIN ================= -->
+
+<main class="main">
+
+<header class="topbar">
+
+  <div class="club-name">
+    NIGHT BOSS
+    <small id="clockText">
+      Пятница • 23:47 • Клуб открыт
+    </small>
+  </div>
+
+  <div class="wallet">
+
+    <div class="money">
+      ₽ <span id="money">125000</span>
+    </div>
+
+    <div class="money rep">
+      ★ <span id="rep">47</span>
+    </div>
+
+    <div class="money level">
+      LVL <span id="level">4</span>
+    </div>
+
+  </div>
+
+</header>
+
+<div class="content">
+
+<!-- ===================================================== -->
+<!-- CLUB -->
+<!-- ===================================================== -->
+
+<section id="club" class="page active">
+
+<div class="hero">
+
+  <div class="hero-content">
+
+    <h2>
+      Добро пожаловать,<br>
+      <span class="pink">Босс.</span>
+    </h2>
+
+    <p>
+      Ты управляешь NIGHT BOSS — большим ночным клубом,
+      где всё зависит от твоих решений. Следи за финансами,
+      персоналом, музыкой, VIP-гостями, атмосферой и репутацией.
+      Каждый вечер клуб живёт своей жизнью.
+    </p>
+
+    <div class="actions">
+
+      <button class="btn primary" onclick="startNight()">
+        🌙 Начать вечер
+      </button>
+
+      <button class="btn" onclick="randomEvent()">
+        🎲 Событие
+      </button>
+
+      <button class="btn gold" onclick="vipNight()">
+        💎 VIP-вечер
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+<div class="grid">
+
+  <div class="card">
+    <div class="stat">
+      Посетители
+    </div>
+
+    <div class="stat-value">
+      <span id="visitors">183</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="stat">
+      Выручка
+    </div>
+
+    <div class="stat-value goldtext">
+      ₽ <span id="income">84200</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="stat">
+      Настроение
+    </div>
+
+    <div class="stat-value good">
+      <span id="mood">86</span>%
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="stat">
+      Репутация
+    </div>
+
+    <div class="stat-value pink">
+      <span id="rep2">47</span>/100
+    </div>
+  </div>
+
+</div>
+
+<div class="section-title">
+  <h3>Быстрые действия</h3>
+  <span>управление клубом</span>
+</div>
+
+<div class="quick-actions">
+
+  <div class="card quick" onclick="activate('DJ-сет')">
+    <div class="quick-icon">🎵</div>
+    <strong>DJ-сет</strong>
+    <p class="stat">Атмосфера +12%</p>
+  </div>
+
+  <div class="card quick" onclick="activate('Happy Hour')">
+    <div class="quick-icon">🍸</div>
+    <strong>Happy Hour</strong>
+    <p class="stat">Посещаемость +18%</p>
+  </div>
+
+  <div class="card quick" onclick="activate('VIP')">
+    <div class="quick-icon">💎</div>
+    <strong>VIP-программа</strong>
+    <p class="stat">Доход +35%</p>
+  </div>
+
+  <div class="card quick" onclick="activate('Фотозона')">
+    <div class="quick-icon">📸</div>
+    <strong>Фотозона</strong>
+    <p class="stat">Репутация +3</p>
+  </div>
+
+</div>
+
+<div class="section-title">
+  <h3>Состояние клуба</h3>
+</div>
+
+<div class="grid">
+
+  <div class="card">
+    <div class="stat">Атмосфера</div>
+    <div class="progress">
+      <i id="atmosphereBar" style="width:84%"></i>
+    </div>
+    <strong id="atmosphereValue">84%</strong>
+  </div>
+
+  <div class="card">
+    <div class="stat">Сервис</div>
+    <div class="progress">
+      <i id="serviceBar" style="width:81%"></i>
+    </div>
+    <strong id="serviceValue">81%</strong>
+  </div>
+
+  <div class="card">
+    <div class="stat">Безопасность</div>
+    <div class="progress">
+      <i id="securityBar" style="width:73%"></i>
+    </div>
+    <strong id="securityValue">73%</strong>
+  </div>
+
+  <div class="card">
+    <div class="stat">Популярность</div>
+    <div class="progress">
+      <i id="popularityBar" style="width:69%"></i>
+    </div>
+    <strong id="popularityValue">69%</strong>
+  </div>
+
+</div>
+
+</section>
+
+<!-- ===================================================== -->
+<!-- BAR -->
+<!-- ===================================================== -->
+
+<section id="bar" class="page">
+
+<div class="section-title">
+  <h2>🍸 Бар</h2>
+  <span>управление меню</span>
+</div>
+
+<div class="bar-layout">
+
+<div class="card">
+
+  <h3>Меню NIGHT BOSS</h3>
+
+  <div class="menu-item">
+    <div>
+      <strong>Neon Kiss</strong>
+      <small>авторский безалкогольный коктейль</small>
+    </div>
+
+    <button class="btn" onclick="sell('Neon Kiss',1800)">
+      ₽1 800
+    </button>
+  </div>
+
+  <div class="menu-item">
+    <div>
+      <strong>Midnight</strong>
+      <small>фирменный коктейль</small>
+    </div>
+
+    <button class="btn" onclick="sell('Midnight',2200)">
+      ₽2 200
+    </button>
+  </div>
+
+  <div class="menu-item">
+    <div>
+      <strong>Velvet</strong>
+      <small>премиальный коктейль</small>
+    </div>
+
+    <button class="btn" onclick="sell('Velvet',3200)">
+      ₽3 200
+    </button>
+  </div>
+
+  <div class="menu-item">
+    <div>
+      <strong>Black Gold</strong>
+      <small>VIP-подача</small>
+    </div>
+
+    <button class="btn gold" onclick="sell('Black Gold',7500)">
+      ₽7 500
+    </button>
+  </div>
+
+  <div class="menu-item">
+    <div>
+      <strong>Royal Celebration</strong>
+      <small>премиальный сет</small>
+    </div>
+
+    <button class="btn gold" onclick="sell('Royal Celebration',12000)">
+      ₽12 000
+    </button>
+  </div>
+
+</div>
+
+<div class="card">
+
+  <h3>Показатели бара</h3>
+
+  <p class="stat">Загрузка</p>
+
+  <div class="progress">
+    <i id="barLoad" style="width:78%"></i>
+  </div>
+
+  <p class="stat">Качество сервиса</p>
+
+  <div class="progress">
+    <i id="barService" style="width:83%"></i>
+  </div>
+
+  <p class="stat">Ассортимент</p>
+
+  <div class="progress">
+    <i id="barMenu" style="width:61%"></i>
+  </div>
+
+  <div class="bar-status">
+
+    <div class="card">
+      <div class="stat">Заказы</div>
+      <strong id="orders">37</strong>
+    </div>
+
+    <div class="card">
+      <div class="stat">Средний чек</div>
+      <strong>₽3 450</strong>
+    </div>
+
+  </div>
+
+  <br>
+
+  <button class="btn primary" onclick="upgradeBar()">
+    ⚡ Улучшить бар — ₽25 000
+  </button>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ===================================================== -->
+<!-- MUSIC -->
+<!-- ===================================================== -->
+
+<section id="music" class="page">
+
+<div class="section-title">
+  <h2>🎵 Музыка</h2>
+  <span>DJ-консоль</span>
+</div>
+
+<div class="bar-layout">
+
+<div class="card music-player">
+
+  <div class="album">
+    🎧
+  </div>
+
+  <div class="track" id="trackName">
+    NIGHT DRIVE
+  </div>
+
+  <div class="artist">
+    NIGHT BOSS DJ
+  </div>
+
+  <audio id="musicAudio" src="bar.mp3" loop></audio>
+
+  <input
+    class="range"
+    id="volume"
+    type="range"
+    min="0"
+    max="1"
+    step="0.01"
+    value=".6"
+  >
+
+  <div class="music-controls">
+
+    <button class="btn primary" onclick="toggleMusic()">
+      ▶ / ⏸
+    </button>
+
+    <button class="btn" onclick="nextTrack()">
+      ⏭ Следующий
+    </button>
+
+  </div>
+
+  <p class="stat" id="musicStatus">
+    Музыка остановлена
+  </p>
+
+</div>
+
+<div class="card">
+
+  <h3>Плейлист</h3>
+
+  <div class="menu-item">
+    <div>
+      <strong>NIGHT DRIVE</strong>
+      <small>Основной сет</small>
+    </div>
+
+    <button class="btn" onclick="selectTrack(0)">
+      Выбрать
+    </button>
+  </div>
+
+  <div class="menu-item">
+    <div>
+      <strong>NEON CITY</strong>
+      <small>Танцпол</small>
+    </div>
+
+    <button class="btn" onclick="selectTrack(1)">
+      Выбрать
+    </button>
+  </div>
+
+  <div class="menu-item">
+    <div>
+      <strong>VELVET NIGHT</strong>
+      <small>VIP Lounge</small>
+    </div>
+
+    <button class="btn" onclick="selectTrack(2)">
+      Выбрать
+    </button>
+  </div>
+
+  <div class="menu-item">
+    <div>
+      <strong>AFTER HOURS</strong>
+      <small>Поздняя ночь</small>
+    </div>
+
+    <button class="btn" onclick="selectTrack(3)">
+      Выбрать
+    </button>
+  </div>
+
+  <br>
+
+  <button class="btn gold" onclick="djBoost()">
+    🔊 DJ Boost — ₽8 000
+  </button>
+
+</div>
+
+</div>
+
+<div class="card" style="margin-top:15px">
+
+  <h3>🎚️ Пульт управления</h3>
+
+  <div class="grid">
+
+    <div class="card">
+      <div class="stat">Бас</div>
+      <input class="range" type="range" value="72">
+    </div>
+
+    <div class="card">
+      <div class="stat">Свет</div>
+      <input class="range" type="range" value="84">
+    </div>
+
+    <div class="card">
+      <div class="stat">Энергия</div>
+      <input class="range" type="range" value="91">
+    </div>
+
+    <div class="card">
+      <div class="stat">Громкость</div>
+      <input class="range" id="volume2" type="range" value="60">
+    </div>
+
+  </div>
+
+</div>
+
+</section>
+
+<!-- ===================================================== -->
+<!-- GUESTS -->
+<!-- ===================================================== -->
+
+<section id="guests" class="page">
+
+<div class="section-title">
+  <h2>👥 Гости</h2>
+  <span>текущая ночь</span>
+</div>
+
+<div class="guest-grid">
+
+<div class="card guest">
+  <div class="guest-icon">🕴️</div>
+  <h3>Александр</h3>
+  <div class="stat">VIP-клиент</div>
+  <div class="guest-status">Интересуется VIP Lounge</div>
+  <br>
+  <button class="btn gold" onclick="guestAction('Александр')">
+    Обслужить
+  </button>
+</div>
+
+<div class="card guest">
+  <div class="guest-icon">👩🏻</div>
+  <h3>Кира</h3>
+  <div class="stat">Постоянная гостья</div>
+  <div class="guest-status">Любит танцпол</div>
+  <br>
+  <button class="btn" onclick="guestAction('Кира')">
+    Подойти
+  </button>
+</div>
+
+<div class="card guest">
+  <div class="guest-icon">🧑🏻</div>
+  <h3>Макс</h3>
+  <div class="stat">Музыкальный продюсер</div>
+  <div class="guest-status">Ищет место для выступления</div>
+  <br>
+  <button class="btn primary" onclick="guestAction('Макс')">
+    Поговорить
+  </button>
+</div>
+
+<div class="card guest">
+  <div class="guest-icon">👩🏼</div>
+  <h3>Диана</h3>
+  <div class="stat">VIP-гостья</div>
+  <div class="guest-status">Оценивает сервис</div>
+  <br>
+  <button class="btn gold" onclick="guestAction('Диана')">
+    Приветствовать
+  </button>
+</div>
+
+<div class="card guest">
+  <div class="guest-icon">👨🏻</div>
+  <h3>Илья</h3>
+  <div class="stat">Предприниматель</div>
+  <div class="guest-status">Готов инвестировать</div>
+  <br>
+  <button class="btn primary" onclick="guestAction('Илья')">
+    Обсудить
+  </button>
+</div>
+
+<div class="card guest">
+  <div class="guest-icon">👩🏽</div>
+  <h3>Ника</h3>
+  <div class="stat">Блогер</div>
+  <div class="guest-status">Снимает атмосферу клуба</div>
+  <br>
+  <button class="btn" onclick="guestAction('Ника')">
+    Пригласить
+  </button>
+</div>
+
+<div class="card guest">
+  <div class="guest-icon">🕺</div>
+  <h3>Роман</h3>
+  <div class="stat">Постоянный клиент</div>
+  <div class="guest-status">Сегодня щедрый</div>
+  <br>
+  <button class="btn gold" onclick="guestAction('Роман')">
+    Обслужить
+  </button>
+</div>
+
+<div class="card guest">
+  <div class="guest-icon">👩🏻‍🦰</div>
+  <h3>Вера</h3>
+  <div class="stat">Гость клуба</div>
+  <div class="guest-status">Ищет новую компанию</div>
+  <br>
+  <button class="btn" onclick="guestAction('Вера')">
+    Познакомиться
+  </button>
+</div>
+
+</div>
+
+</section>
+
+<!-- ===================================================== -->
+<!-- STAFF -->
+<!-- ===================================================== -->
+
+<section id="staff" class="page">
+
+<div class="section-title">
+
+  <h2>💃 Персонал</h2>
+
+  <button class="btn primary" onclick="hire()">
+    + Нанять сотрудника
+  </button>
+
+</div>
+
+<div class="staff-grid">
+
+<div class="card person">
+
+  <div class="avatar">👩🏻</div>
+
+  <h4>Алиса</h4>
+
+  <div class="role">
+    VIP-хостес
+  </div>
+
+  <div class="tags">
+    <span class="tag">Обаяние 94</span>
+    <span class="tag">Стиль 91</span>
+    <span class="tag">Сервис 88</span>
+  </div>
+
+  <p class="stat">Настроение 92%</p>
+
+  <div class="progress">
+    <i style="width:92%"></i>
+  </div>
+
+  <button class="btn" onclick="talk('Алиса')">
+    Поговорить
+  </button>
+
+</div>
+
+<div class="card person">
+
+  <div class="avatar">👩🏼</div>
+
+  <h4>Мия</h4>
+
+  <div class="role">
+    Бармен
+  </div>
+
+  <div class="tags">
+    <span class="tag">Коктейли 97</span>
+    <span class="tag">Скорость 89</span>
+    <span class="tag">Характер 83</span>
+  </div>
+
+  <p class="stat">Настроение 78%</p>
+
+  <div class="progress">
+    <i style="width:78%"></i>
+  </div>
+
+  <button class="btn" onclick="talk('Мия')">
+    Поговорить
+  </button>
+
+</div>
+
+<div class="card person">
+
+  <div class="avatar">👩🏽</div>
+
+  <h4>София</h4>
+
+  <div class="role">
+    Танцевальная команда
+  </div>
+
+  <div class="tags">
+    <span class="tag">Энергия 96</span>
+    <span class="tag">Шоу 93</span>
+    <span class="tag">Харизма 90</span>
+  </div>
+
+  <p class="stat">Настроение 88%</p>
+
+  <div class="progress">
+    <i style="width:88%"></i>
+  </div>
+
+  <button class="btn" onclick="talk('София')">
+    Поговорить
+  </button>
+
+</div>
+
+<div class="card person">
+
+  <div class="avatar">👩🏻‍🦰</div>
+
+  <h4>Виктория</h4>
+
+  <div class="role">
+    VIP-менеджер
+  </div>
+
+  <div class="tags">
+    <span class="tag">Переговоры 95</span>
+    <span class="tag">Влияние 92</span>
+    <span class="tag">Доверие 74</span>
+  </div>
+
+  <p class="stat">Настроение 81%</p>
+
+  <div class="progress">
+    <i style="width:81%"></i>
+  </div>
+
+  <button class="btn" onclick="talk('Виктория')">
+    Поговорить
+  </button>
+
+</div>
+
+<div class="card person">
+
+  <div class="avatar">👩🏾</div>
+
+  <h4>Луна</h4>
+
+  <div class="role">
+    Артистка
+  </div>
+
+  <div class="tags">
+    <span class="tag">Сцена 91</span>
+    <span class="tag">Харизма 95</span>
+    <span class="tag">Импровизация 87</span>
+  </div>
+
+  <p class="stat">Настроение 90%</p>
+
+  <div class="progress">
+    <i style="width:90%"></i>
+  </div>
+
+  <button class="btn" onclick="talk('Луна')">
+    Поговорить
+  </button>
+
+</div>
+
+<div class="card person">
+
+  <div class="avatar">👩🏼‍🦱</div>
+
+  <h4>Ева</h4>
+
+  <div class="role">
+    VIP-официантка
+  </div>
+
+  <div class="tags">
+    <span class="tag">Сервис 93</span>
+    <span class="tag">Тактичность 96</span>
+    <span class="tag">Общение 89</span>
+  </div>
+
+  <p class="stat">Настроение 85%</p>
+
+  <div class="progress">
+    <i style="width:85%"></i>
+  </div>
+
+  <button class="btn" onclick="talk('Ева')">
+    Поговорить
+  </button>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ===================================================== -->
+<!-- ROOMS -->
+<!-- ===================================================== -->
+
+<section id="rooms" class="page">
+
+<div class="section-title">
+  <h2>🌙 Зоны клуба</h2>
+</div>
+
+<div class="rooms">
+
+<div class="card room">
+  <div class="room-icon">🎵</div>
+  <h3>Главный танцпол</h3>
+  <p>
+    Главная зона клуба. Музыка, свет,
+    танцы и основной поток гостей.
+  </p>
+  <button class="btn primary"
+    onclick="enterRoom('Главный танцпол')">
+    Открыть
+  </button>
+</div>
+
+<div class="card room">
+  <div class="room-icon">🍸</div>
+  <h3>Бар</h3>
+  <p>
+    Центральная точка продаж.
+    Чем лучше обслуживание, тем выше доход.
+  </p>
+  <button class="btn"
+    onclick="enterRoom('Бар')">
+    Посетить
+  </button>
+</div>
+
+<div class="card room">
+  <div class="room-icon">💎</div>
+  <h3>VIP Lounge</h3>
+  <p>
+    Закрытая зона для гостей
+    с высоким средним чеком.
+  </p>
+  <button class="btn gold"
+    onclick="enterRoom('VIP Lounge')">
+    Войти
+  </button>
+</div>
+
+<div class="card room">
+  <div class="room-icon">🌹</div>
+  <h3>Private Lounge</h3>
+  <p>
+    Спокойная приватная зона
+    для разговоров и сюжетных сцен.
+  </p>
+  <button class="btn"
+    onclick="enterRoom('Private Lounge')">
+    Открыть
+  </button>
+</div>
+
+<div class="card room">
+  <div class="room-icon">🎤</div>
+  <h3>Сцена</h3>
+  <p>
+    Концерты, выступления артистов
+    и тематические шоу.
+  </p>
+  <button class="btn"
+    onclick="enterRoom('Сцена')">
+    Открыть
+  </button>
+</div>
+
+<div class="card room">
+  <div class="room-icon">🛋️</div>
+  <h3>Комната босса</h3>
+  <p>
+    Личное пространство владельца
+    для переговоров и управления.
+  </p>
+  <button class="btn"
+    onclick="enterRoom('Комната босса')">
+    Войти
+  </button>
+</div>
+
+</div>
+
+</section>
+
+<!-- ===================================================== -->
+<!-- RELATIONSHIPS -->
+<!-- ===================================================== -->
+
+<section id="relationships" class="page">
+
+<div class="section-title">
+  <h2>❤️ Отношения</h2>
+  <span>личные связи</span>
+</div>
+
+<div class="staff-grid">
+
+<div class="card relationship">
+
+  <div class="avatar">👩🏻</div>
+
+  <h4>Алиса</h4>
+
+  <div class="quote">
+    «Ты снова здесь… Как проходит вечер, босс?»
+  </div>
+
+  <p class="stat">Доверие</p>
+
+  <div class="progress">
+    <i id="trustAlice" style="width:72%"></i>
+  </div>
+
+  <p class="stat">
+    Химия
+  </p>
+
+  <div class="progress">
+    <i id="chemAlice" style="width:86%"></i>
+  </div>
+
+  <p class="heart-meter">
+    ❤️ Отношения:
+    <span id="relAlice">86</span>/100
+  </p>
+
+  <button class="btn primary"
+    onclick="romance('Алиса')">
+    Поговорить наедине
+  </button>
+
+</div>
+
+<div class="card relationship">
+
+  <div class="avatar">👩🏼</div>
+
+  <h4>Мия</h4>
+
+  <div class="quote">
+    «У босса сегодня хорошее настроение?»
+  </div>
+
+  <p class="stat">Доверие</p>
+
+  <div class="progress">
+    <i id="trustMia" style="width:63%"></i>
+  </div>
+
+  <p class="stat">Химия</p>
+
+  <div class="progress">
+    <i id="chemMia" style="width:79%"></i>
+  </div>
+
+  <p class="heart-meter">
+    ❤️ Отношения:
+    <span id="relMia">79</span>/100
+  </p>
+
+  <button class="btn primary"
+    onclick="romance('Мия')">
+    Пообщаться
+  </button>
+
+</div>
+
+<div class="card relationship">
+
+  <div class="avatar">👩🏽</div>
+
+  <h4>София</h4>
+
+  <div class="quote">
+    «Мне нравится твоя уверенность.»
+  </div>
+
+  <p class="stat">Доверие</p>
+
+  <div class="progress">
+    <i id="trustSofia" style="width:67%"></i>
+  </div>
+
+  <p class="stat">Химия</p>
+
+  <div class="progress">
+    <i id="chemSofia" style="width:91%"></i>
+  </div>
+
+  <p class="heart-meter">
+    ❤️ Отношения:
+    <span id="relSofia">91</span>/100
+  </p>
+
+  <button class="btn primary"
+    onclick="romance('София')">
+    Продолжить разговор
+  </button>
+
+</div>
+
+</div>
+
+<div class="card" style="margin-top:15px">
+
+  <h3>❤️ Система отношений</h3>
+
+  <p class="stat">
+    Общение, совместные события, подарки и правильные
+    решения повышают доверие и химию.
+    На высоких уровнях открываются новые сюжетные события,
+    бонусы и специальные диалоги.
+  </p>
+
+</div>
+
+</section>
+
+<!-- ===================================================== -->
+<!-- UPGRADES -->
+<!-- ===================================================== -->
+
+<section id="upgrades" class="page">
+
+<div class="section-title">
+  <h2>⚡ Развитие клуба</h2>
+</div>
+
+<div class="grid">
+
+<div class="card">
+  <h3>💡 Свет</h3>
+  <p class="stat">Уровень 2/5</p>
+
+  <div class="progress">
+    <i style="width:40%"></i>
+  </div>
+
+  <p>+8% атмосфера</p>
+
+  <button class="btn"
+    onclick="buyUpgrade('Свет',18000)">
+    Улучшить ₽18 000
+  </button>
+</div>
+
+<div class="card">
+  <h3>🔊 Звук</h3>
+  <p class="stat">Уровень 3/5</p>
+
+  <div class="progress">
+    <i style="width:60%"></i>
+  </div>
+
+  <p>+12% танцпол</p>
+
+  <button class="btn"
+    onclick="buyUpgrade('Звук',32000)">
+    Улучшить ₽32 000
+  </button>
+</div>
+
+<div class="card">
+  <h3>🍸 Бар</h3>
+  <p class="stat">Уровень 2/5</p>
+
+  <div class="progress">
+    <i style="width:40%"></i>
+  </div>
+
+  <p>+10% выручка</p>
+
+  <button class="btn"
+    onclick="buyUpgrade('Бар',25000)">
+    Улучшить ₽25 000
+  </button>
+</div>
+
+<div class="card">
+  <h3>💎 VIP</h3>
+  <p class="stat">Уровень 1/5</p>
+
+  <div class="progress">
+    <i style="width:20%"></i>
+  </div>
+
+  <p>+15% VIP-доход</p>
+
+  <button class="btn gold"
+    onclick="buyUpgrade('VIP',50000)">
+    Улучшить ₽50 000
+  </button>
+</div>
+
+<div class="card">
+  <h3>🛡️ Охрана</h3>
+  <p class="stat">Уровень 2/5</p>
+
+  <div class="progress">
+    <i style="width:40%"></i>
+  </div>
+
+  <p>+12% безопасность</p>
+
+  <button class="btn"
+    onclick="buyUpgrade('Охрана',30000)">
+    Улучшить ₽30 000
+  </button>
+</div>
+
+<div class="card">
+  <h3>📸 Медиа</h3>
+  <p class="stat">Уровень 1/5</p>
+
+  <div class="progress">
+    <i style="width:20%"></i>
+  </div>
+
+  <p>+10% популярность</p>
+
+  <button class="btn primary"
+    onclick="buyUpgrade('Медиа',28000)">
+    Улучшить ₽28 000
+  </button>
+</div>
+
+<div class="card">
+  <h3>🪩 Танцпол</h3>
+  <p class="stat">Уровень 3/5</p>
+
+  <div class="progress">
+    <i style="width:60%"></i>
+  </div>
+
+  <p>+15% посещаемость</p>
+
+  <button class="btn"
+    onclick="buyUpgrade('Танцпол',40000)">
+    Улучшить ₽40 000
+  </button>
+</div>
+
+<div class="card">
+  <h3>🎤 Сцена</h3>
+  <p class="stat">Уровень 2/5</p>
+
+  <div class="progress">
+    <i style="width:40%"></i>
+  </div>
+
+  <p>+8% репутация</p>
+
+  <button class="btn"
+    onclick="buyUpgrade('Сцена',35000)">
+    Улучшить ₽35 000
+  </button>
+</div>
+
+</div>
+
+</section>
+
+<!-- ===================================================== -->
+<!-- MISSIONS -->
+<!-- ===================================================== -->
+
+<section id="missions" class="page">
+
+<div class="section-title">
+  <h2>📋 Задания</h2>
+  <span>обновляются каждый игровой день</span>
+</div>
+
+<div class="grid">
+
+<div class="card mission">
+
+  <h3>🍸 Бармен вечера</h3>
+
+  <p class="stat">
+    Продать 10 напитков
+  </p>
+
+  <div class="progress">
+    <i id="missionBar" style="width:30%"></i>
+  </div>
+
+  <p class="reward">
+    ₽8 000 + 2 ★
+  </p>
+
+  <button class="btn"
+    onclick="mission('бар')">
+    Выполнить
+  </button>
+
+</div>
+
+<div class="card mission">
+
+  <h3>💎 VIP-клиент</h3>
+
+  <p class="stat">
+    Обслужить VIP-гостя
+  </p>
+
+  <div class="progress">
+    <i style="width:50%"></i>
+  </div>
+
+  <p class="reward">
+    ₽15 000
+  </p>
+
+  <button class="btn gold"
+    onclick="mission('VIP')">
+    Выполнить
+  </button>
+
+</div>
+
+<div class="card mission">
+
+  <h3>📸 Популярность</h3>
+
+  <p class="stat">
+    Провести мероприятие
+  </p>
+
+  <div class="progress">
+    <i style="width:75%"></i>
+  </div>
+
+  <p class="reward">
+    +5 ★
+  </p>
+
+  <button class="btn"
+    onclick="mission('мероприятие')">
+    Выполнить
+  </button>
+
+</div>
+
+<div class="card mission">
+
+  <h3>❤️ Личная встреча</h3>
+
+  <p class="stat">
+    Провести время с сотрудником
+  </p>
+
+  <p class="reward">
+    +8 отношений
+  </p>
+
+  <button class="btn primary"
+    onclick="mission('отношения')">
+    Выполнить
+  </button>
+
+</div>
+
+<div class="card mission">
+
+  <h3>🎵 Музыкальная ночь</h3>
+
+  <p class="stat">
+    Запустить DJ-сет
+  </p>
+
+  <p class="reward">
+    ₽6 500 + 3 ★
+  </p>
+
+  <button class="btn"
+    onclick="mission('music')">
+    Выполнить
+  </button>
+
+</div>
+
+<div class="card mission">
+
+  <h3>👥 Полный зал</h3>
+
+  <p class="stat">
+    Довести количество гостей до 300
+  </p>
+
+  <p class="reward">
+    ₽12 000
+  </p>
+
+  <button class="btn"
+    onclick="mission('guests')">
+    Проверить
+  </button>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ===================================================== -->
+<!-- STATS -->
+<!-- ===================================================== -->
+
+<section id="stats" class="page">
+
+<div class="section-title">
+  <h2>📊 Статистика</h2>
+</div>
+
+<div class="grid">
+
+<div class="card">
+  <div class="stat">Всего заработано</div>
+  <div class="stat-value goldtext">
+    ₽ <span id="totalEarned">0</span>
+  </div>
+</div>
+
+<div class="card">
+  <div class="stat">Продано товаров</div>
+  <div class="stat-value">
+    <span id="soldCount">0</span>
+  </div>
+</div>
+
+<div class="card">
+  <div class="stat">VIP-гостей</div>
+  <div class="stat-value">
+    <span id="vipCount">0</span>
+  </div>
+</div>
+
+<div class="card">
+  <div class="stat">Проведено ночей</div>
+  <div class="stat-value">
+    <span id="nights">0</span>
+  </div>
+</div>
+
+</div>
+
+<div class="card" style="margin-top:15px">
+
+  <h3>🏆 Достижения</h3>
+
+  <div class="table-wrap">
+
+  <table>
+
+    <thead>
+      <tr>
+        <th>Достижение</th>
+        <th>Условие</th>
+        <th>Статус</th>
+      </tr>
+    </thead>
+
+    <tbody>
+
+      <tr>
+        <td>🌙 Первая ночь</td>
+        <td>Открыть клуб</td>
+        <td class="good">Получено</td>
+      </tr>
+
+      <tr>
+        <td>🍸 Бармен</td>
+        <td>Продать 50 товаров</td>
+        <td id="achBar">В процессе</td>
+      </tr>
+
+      <tr>
+        <td>💎 VIP Boss</td>
+        <td>Обслужить 10 VIP</td>
+        <td id="achVip">В процессе</td>
+      </tr>
+
+      <tr>
+        <td>⭐ Звезда города</td>
+        <td>Репутация 100</td>
+        <td id="achRep">В процессе</td>
+      </tr>
+
+      <tr>
+        <td>💰 Миллионер</td>
+        <td>Заработать ₽1 000 000</td>
+        <td id="achMoney">В процессе</td>
+      </tr>
+
+    </tbody>
+
+  </table>
+
+  </div>
+
+</div>
+
+</section>
+
+<!-- ===================================================== -->
+<!-- JOURNAL -->
+<!-- ===================================================== -->
+
+<section id="journal" class="page">
+
+<div class="section-title">
+
+  <h2>📜 Журнал</h2>
+
+  <button class="btn danger" onclick="clearLog()">
+    Очистить
+  </button>
+
+</div>
+
+<div class="card log" id="log">
+
+  <div class="log-item">
+    <b>Клуб открыт.</b>
+    <span>23:00</span>
+  </div>
+
+  <div class="log-item">
+    <b>Алиса пришла на смену.</b>
+    <span>23:05</span>
+  </div>
+
+  <div class="log-item">
+    <b>VIP-зона подготовлена.</b>
+    <span>23:15</span>
+  </div>
+
+</div>
+
+</section>
+
+</div>
+</main>
+</div>
+
+<!-- ================= MOBILE NAV ================= -->
+
+<div class="mobile-nav">
+
+  <button class="active"
+    onclick="openPage('club',this)">
+    <b>🏠</b>Клуб
+  </button>
+
+  <button onclick="openPage('bar',this)">
+    <b>🍸</b>Бар
+  </button>
+
+  <button onclick="openPage('music',this)">
+    <b>🎵</b>Музыка
+  </button>
+
+  <button onclick="openPage('staff',this)">
+    <b>💃</b>Персонал
+  </button>
+
+  <button onclick="openPage('relationships',this)">
+    <b>❤️</b>Связи
+  </button>
+
+</div>
+
+<!-- ================= DIALOG ================= -->
+
+<div class="dialog" id="dialog">
+
+  <div class="dialog-box">
+
+    <h2 id="dialogTitle">
+      Событие
+    </h2>
+
+    <div class="dialog-text"
+      id="dialogText">
+    </div>
+
+    <div class="dialog-buttons"
+      id="dialogButtons">
+    </div>
+
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+
+/* =====================================================
+   GAME STATE
+===================================================== */
+
+let money = 125000;
+let reputation = 47;
+let visitors = 183;
+let income = 84200;
+let mood = 86;
+
+let atmosphere = 84;
+let service = 81;
+let security = 73;
+let popularity = 69;
+
+let level = 4;
+let xp = 35;
+
+let orders = 37;
+let totalEarned = 0;
+let soldCount = 0;
+let vipCount = 0;
+let nights = 0;
+
+let musicIndex = 0;
+
+const tracks = [
+  "NIGHT DRIVE",
+  "NEON CITY",
+  "VELVET NIGHT",
+  "AFTER HOURS"
+];
+
+const $ = id => document.getElementById(id);
+
+
+/* =====================================================
+   FORMAT
+===================================================== */
+
+function fmt(n){
+  return Math.floor(n).toLocaleString("ru-RU");
+}
+
+
+/* =====================================================
+   UPDATE UI
+===================================================== */
+
+function update(){
+
+  $("money").textContent = fmt(money);
+
+  $("rep").textContent = reputation;
+  $("rep2").textContent = reputation;
+
+  $("visitors").textContent = visitors;
+  $("income").textContent = fmt(income);
+
+  $("mood").textContent = mood;
+
+  $("level").textContent = level;
+  $("levelSide").textContent = level;
+
+  $("atmosphereBar").style.width = atmosphere + "%";
+  $("serviceBar").style.width = service + "%";
+  $("securityBar").style.width = security + "%";
+  $("popularityBar").style.width = popularity + "%";
+
+  $("atmosphereValue").textContent = atmosphere + "%";
+  $("serviceValue").textContent = service + "%";
+  $("securityValue").textContent = security + "%";
+  $("popularityValue").textContent = popularity + "%";
+
+  $("orders").textContent = orders;
+
+  $("totalEarned").textContent = fmt(totalEarned);
+  $("soldCount").textContent = soldCount;
+  $("vipCount").textContent = vipCount;
+  $("nights").textContent = nights;
+
+  $("bossProgress").style.width =
+    Math.min(100,(xp / 100) * 100) + "%";
+
+  checkAchievements();
+
+  saveGame();
+}
+
+
+/* =====================================================
+   SAVE / LOAD
+===================================================== */
+
+function saveGame(){
+
+  const data = {
+    money,
+    reputation,
+    visitors,
+    income,
+    mood,
+    atmosphere,
+    service,
+    security,
+    popularity,
+    level,
+    xp,
+    orders,
+    totalEarned,
+    soldCount,
+    vipCount,
+    nights
+  };
+
+  localStorage.setItem(
+    "nightBossSave",
+    JSON.stringify(data)
+  );
+}
+
+
+function loadGame(){
+
+  const raw =
+    localStorage.getItem("nightBossSave");
+
+  if(!raw) return;
+
+  try{
+
+    const d = JSON.parse(raw);
+
+    money = d.money ?? money;
+    reputation = d.reputation ?? reputation;
+    visitors = d.visitors ?? visitors;
+    income = d.income ?? income;
+    mood = d.mood ?? mood;
+
+    atmosphere = d.atmosphere ?? atmosphere;
+    service = d.service ?? service;
+    security = d.security ?? security;
+    popularity = d.popularity ?? popularity;
+
+    level = d.level ?? level;
+    xp = d.xp ?? xp;
+
+    orders = d.orders ?? orders;
+    totalEarned = d.totalEarned ?? totalEarned;
+    soldCount = d.soldCount ?? soldCount;
+    vipCount = d.vipCount ?? vipCount;
+    nights = d.nights ?? nights;
+
+  }catch(e){
+
+    console.log("Ошибка загрузки сохранения");
+
+  }
+
+}
+
+
+/* =====================================================
+   LEVEL
+===================================================== */
+
+function addXP(value){
+
+  xp += value;
+
+  if(xp >= 100){
+
+    xp -= 100;
+    level++;
+
+    money += level * 5000;
+
+    toast(
+      "🎉 Новый уровень! Теперь уровень " + level
+    );
+
+    log(
+      "Получен новый уровень: " + level
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   NAVIGATION
+===================================================== */
+
+function openPage(id,button){
+
+  document
+    .querySelectorAll(".page")
+    .forEach(x => x.classList.remove("active"));
+
+  $(id).classList.add("active");
+
+  document
+    .querySelectorAll(".nav button,.mobile-nav button")
+    .forEach(x => x.classList.remove("active"));
+
+  if(button){
+    button.classList.add("active");
+  }
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
+}
+
+
+/* =====================================================
+   DIALOG
+===================================================== */
+
+function closeDialog(){
+
+  $("dialog")
+    .classList.remove("show");
+
+}
+
+
+function showDialog(title,text,buttons=[]){
+
+  $("dialogTitle").textContent = title;
+
+  $("dialogText").innerHTML = text;
+
+  const area = $("dialogButtons");
+
+  area.innerHTML = "";
+
+  buttons.forEach(b => {
+
+    const btn =
+      document.createElement("button");
+
+    btn.className =
+      "btn " + (b.class || "");
+
+    btn.textContent = b.text;
+
+    btn.onclick = () => {
+
+      if(b.action) b.action();
+
+      closeDialog();
+
+    };
+
+    area.appendChild(btn);
+
+  });
+
+  $("dialog").classList.add("show");
+
+}
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+let toastTimer;
+
+function toast(text){
+
+  const t = $("toast");
+
+  t.textContent = text;
+
+  t.classList.add("show");
+
+  clearTimeout(toastTimer);
+
+  toastTimer =
+    setTimeout(
+      () => t.classList.remove("show"),
+      2400
+    );
+
+}
+
+
+/* =====================================================
+   LOG
+===================================================== */
+
+function log(text){
+
+  const box = $("log");
+
+  const d = new Date();
+
+  const time =
+    d.toLocaleTimeString(
+      "ru-RU",
+      {
+        hour:"2-digit",
+        minute:"2-digit"
+      }
+    );
+
+  box.innerHTML =
+    `<div class="log-item">
+      <b>${text}</b>
+      <span>${time}</span>
+    </div>`
+    + box.innerHTML;
+
+}
+
+
+function clearLog(){
+
+  $("log").innerHTML = "";
+
+  toast("Журнал очищен");
+
+}
+
+
+/* =====================================================
+   NIGHT
+===================================================== */
+
+function startNight(){
+
+  nights++;
+
+  const addVisitors =
+    Math.floor(Math.random()*80)+30;
+
+  const addIncome =
+    Math.floor(Math.random()*20000)+10000;
+
+  visitors += addVisitors;
+
+  income += addIncome;
+
+  money += addIncome;
+
+  totalEarned += addIncome;
+
+  mood =
+    Math.min(
+      100,
+      mood + 5
+    );
+
+  reputation =
+    Math.min(
+      100,
+      reputation + 1
+    );
+
+  popularity =
+    Math.min(
+      100,
+      popularity + 2
+    );
+
+  addXP(15);
+
+  log(
+    "🌙 Ночная смена началась. +" +
+    addVisitors +
+    " гостей."
+  );
+
+  toast(
+    "🌙 Вечер начался!"
+  );
+
+  update();
+
+}
+
+
+/* =====================================================
+   VIP NIGHT
+===================================================== */
+
+function vipNight(){
+
+  if(money < 12000){
+
+    toast("Недостаточно денег");
+
+    return;
+
+  }
+
+  money -= 12000;
+
+  const earn =
+    Math.floor(Math.random()*25000)+25000;
+
+  money += earn;
+  income += earn;
+  totalEarned += earn;
+
+  visitors += 35;
+
+  vipCount++;
+
+  reputation =
+    Math.min(100,reputation+4);
+
+  popularity =
+    Math.min(100,popularity+3);
+
+  addXP(20);
+
+  log(
+    "💎 VIP-вечер принёс ₽" +
+    fmt(earn)
+  );
+
+  toast(
+    "💎 VIP-вечер успешен!"
+  );
+
+  update();
+
+}
+
+
+/* =====================================================
+   RANDOM EVENT
+===================================================== */
+
+function randomEvent(){
+
+  const events = [
+
+    {
+      title:"💎 Богатый гость",
+      text:
+        "В клуб пришёл новый VIP-гость. " +
+        "Он заинтересован в закрытой зоне.",
+      buttons:[
+        {
+          text:"Принять VIP",
+          class:"gold",
+          action:()=>{
+
+            const earn = 18000;
+
+            money += earn;
+            income += earn;
+            totalEarned += earn;
+
+            reputation =
+              Math.min(100,reputation+2);
+
+            vipCount++;
+
+            addXP(10);
+
+            log(
+              "VIP-гость оставил ₽18 000."
+            );
+
+            toast("+₽18 000");
+
+            update();
+
+          }
+        },
+        {
+          text:"Передать менеджеру",
+          action:()=>{
+
+            reputation++;
+
+            log(
+              "VIP передан менеджеру."
+            );
+
+            update();
+
+          }
+        }
+      ]
+    },
+
+    {
+      title:"🎵 Полный танцпол",
+      text:
+        "DJ поставил новый трек. " +
+        "Гости заполнили танцпол.",
+      buttons:[
+        {
+          text:"Продолжить",
+          class:"primary",
+          action:()=>{
+
+            visitors += 70;
+
+            const earn = 12000;
+
+            money += earn;
+            income += earn;
+            totalEarned += earn;
+
+            mood =
+              Math.min(100,mood+8);
+
+            atmosphere =
+              Math.min(100,atmosphere+5);
+
+            addXP(12);
+
+            log(
+              "🎵 Танцпол переполнен."
+            );
+
+            update();
+
+          }
+        }
+      ]
+    },
+
+    {
+      title:"📸 Вирусное видео",
+      text:
+        "Посетитель снял атмосферу клуба. " +
+        "Видео быстро набирает просмотры.",
+      buttons:[
+        {
+          text:"Использовать рекламу",
+          class:"primary",
+          action:()=>{
+
+            reputation =
+              Math.min(100,reputation+5);
+
+            popularity =
+              Math.min(100,popularity+8);
+
+            visitors += 50;
+
+            log(
+              "📸 Видео стало вирусным."
+            );
+
+            toast(
+              "+5 ★ • +8 популярности"
+            );
+
+            update();
+
+          }
+        }
+      ]
+    },
+
+    {
+      title:"🛡️ Проблема у входа",
+      text:
+        "Охрана заметила конфликт возле входа.",
+      buttons:[
+        {
+          text:"Усилить охрану",
+          class:"primary",
+          action:()=>{
+
+            if(money >= 5000){
+
+              money -= 5000;
+
+              security =
+                Math.min(100,security+8);
+
+              log(
+                "Охрана получила усиление."
+              );
+
+              toast(
+                "🛡️ Безопасность +8"
+              );
+
+            }else{
+
+              toast(
+                "Нужно ₽5 000"
+              );
+
+            }
+
+            update();
+
+          }
+        },
+        {
+          text:"Разобраться лично",
+          action:()=>{
+
+            security =
+              Math.min(100,security+3);
+
+            reputation++;
+
+            log(
+              "Босс лично решил конфликт."
+            );
+
+            update();
+
+          }
+        }
+      ]
+    }
+
+  ];
+
+  const e =
+    events[
+      Math.floor(
+        Math.random()*events.length
+      )
+    ];
+
+  showDialog(
+    e.title,
+    e.text,
+    e.buttons
+  );
+
+}
+
+
+/* =====================================================
+   ACTIVATIONS
+===================================================== */
+
+function activate(name){
+
+  income += 5000;
+  money += 5000;
+  totalEarned += 5000;
+
+  mood =
+    Math.min(100,mood+4);
+
+  atmosphere =
+    Math.min(100,atmosphere+5);
+
+  popularity =
+    Math.min(100,popularity+2);
+
+  addXP(7);
+
+  log(
+    "Активировано событие: " +
+    name
+  );
+
+  toast(
+    name + " запущено"
+  );
+
+  update();
+
+}
+
+
+/* =====================================================
+   BAR
+===================================================== */
+
+function sell(name,price){
+
+  money += price;
+  income += price;
+  totalEarned += price;
+
+  visitors =
+    Math.max(0,visitors-1);
+
+  orders++;
+  soldCount++;
+
+  service =
+    Math.min(100,service+0.1);
+
+  addXP(2);
+
+  log(
+    `Продан "${name}" за ₽${fmt(price)}.`
+  );
+
+  toast(
+    "+₽" + fmt(price)
+  );
+
+  update();
+
+}
+
+
+function upgradeBar(){
+
+  if(money < 25000){
+
+    toast(
+      "Недостаточно денег"
+    );
+
+    return;
+
+  }
+
+  money -= 25000;
+
+  income += 5000;
+
+  reputation =
+    Math.min(100,reputation+2);
+
+  service =
+    Math.min(100,service+8);
+
+  log(
+    "🍸 Бар улучшен."
+  );
+
+  toast(
+    "🍸 Бар улучшен"
+  );
+
+  update();
+
+}
+
+
+/* =====================================================
+   STAFF
+===================================================== */
+
+function hire(){
+
+  const cost = 15000;
+
+  if(money < cost){
+
+    toast(
+      "Нужно ₽15 000"
+    );
+
+    return;
+
+  }
+
+  money -= cost;
+
+  mood =
+    Math.min(100,mood+3);
+
+  service =
+    Math.min(100,service+2);
+
+  log(
+    "Нанят новый сотрудник."
+  );
+
+  toast(
+    "Новый сотрудник нанят"
+  );
+
+  update();
+
+}
+
+
+const dialogues = {
+
+  "Алиса":[
+    "«Ты сегодня выглядишь так, будто собираешься перевернуть весь клуб.»",
+    "«Рада тебя видеть, босс. Как проходит вечер?»",
+    "«Мне нравится, когда ты лично контролируешь клуб.»"
+  ],
+
+  "Мия":[
+    "«Босс, у нас сегодня сумасшедшая очередь у бара.»",
+    "«Ты опять пришёл проверить мою работу?»",
+    "«Если хочешь, после смены можем спокойно поговорить.»"
+  ],
+
+  "София":[
+    "«Музыка сегодня просто невероятная.»",
+    "«Ты видел, сколько людей собралось у сцены?»",
+    "«Твой клуб становится всё интереснее.»"
+  ],
+
+  "Виктория":[
+    "«Два VIP-гостя уже спрашивали о тебе.»",
+    "«Сегодня можно заработать очень хорошие деньги.»",
+    "«Мне нравится твой стиль управления.»"
+  ],
+
+  "Луна":[
+    "«Я приготовила для сегодняшней сцены кое-что особенное.»",
+    "«Надеюсь, босс оценит шоу.»",
+    "«После выступления поговорим?»"
+  ],
+
+  "Ева":[
+    "«В VIP всё спокойно.»",
+    "«Ты можешь на меня рассчитывать.»",
+    "«Сегодня здесь очень особенная атмосфера.»"
+  ]
+
+};
+
+
+function talk(name){
+
+  const arr =
+    dialogues[name] ||
+    ["«Рада тебя видеть.»"];
+
+  const phrase =
+    arr[
+      Math.floor(
+        Math.random()*arr.length
+      )
+    ];
+
+  showDialog(
+    name,
+    `<b>${name}:</b><br><br>${phrase}`,
+    [
+      {
+        text:"Ответить тепло",
+        class:"primary",
+        action:()=>{
+
+          reputation =
+            Math.min(100,reputation+1);
+
+          log(
+            `Ты тепло поговорил с ${name}.`
+          );
+
+          toast(
+            "❤️ Доверие улучшилось"
+          );
+
+          update();
+
+        }
+      },
+
+      {
+        text:"Обсудить работу",
+        action:()=>{
+
+          income += 2000;
+          money += 2000;
+          totalEarned += 2000;
+
+          log(
+            `Ты обсудил рабочие вопросы с ${name}.`
+          );
+
+          update();
+
+        }
+      },
+
+      {
+        text:"Закончить разговор"
+      }
+    ]
+  );
+
+}
+
+
+/* =====================================================
+   RELATIONSHIPS
+===================================================== */
+
+const relationshipData = {
+
+  "Алиса":{
+    rel:86,
+    trust:72,
+    chem:86
+  },
+
+  "Мия":{
+    rel:79,
+    trust:63,
+    chem:79
+  },
+
+  "София":{
+    rel:91,
+    trust:67,
+    chem:91
+  }
+
+};
+
+
+function romance(name){
+
+  const data =
+    relationshipData[name] ||
+    {
+      rel:60,
+      trust:60,
+      chem:60
+    };
+
+  const lines = {
+
+    "Алиса":
+      "Алиса улыбается: «Иногда мне кажется, что под твоим руководством клуб — это совсем не просто работа…»",
+
+    "Мия":
+      "Мия тихо смеётся: «Ты умеешь создавать вокруг себя странное притяжение, босс.»",
+
+    "София":
+      "София смотрит на тебя: «Мне нравится проводить с тобой время. С тобой никогда не скучно.»"
+
+  };
+
+  showDialog(
+    "❤️ " + name,
+    lines[name] ||
+      "Между вами чувствуется особая химия.",
+    [
+
+      {
+        text:"Ответить тепло",
+        class:"primary",
+        action:()=>{
+
+          data.rel =
+            Math.min(100,data.rel+3);
+
+          data.trust =
+            Math.min(100,data.trust+2);
+
+          log(
+            `Отношения с ${name} улучшились.`
+          );
+
+          toast(
+            "❤️ Отношения +3"
+          );
+
+          updateRelationshipUI();
+
+        }
+      },
+
+      {
+        text:"Поговорить о чувствах",
+        action:()=>{
+
+          data.trust =
+            Math.min(100,data.trust+4);
+
+          data.rel =
+            Math.min(100,data.rel+2);
+
+          log(
+            `Вы поговорили с ${name} откровенно.`
+          );
+
+          toast(
+            "❤️ Доверие +4"
+          );
+
+          updateRelationshipUI();
+
+        }
+      }
+
+    ]
+  );
+
+}
+
+
+function updateRelationshipUI(){
+
+  $("relAlice").textContent =
+    relationshipData.Алиса.rel;
+
+  $("relMia").textContent =
+    relationshipData.Мия.rel;
+
+  $("relSofia").textContent =
+    relationshipData.София.rel;
+
+}
+
+
+/* =====================================================
+   GUESTS
+===================================================== */
+
+function guestAction(name){
+
+  const actions = [
+
+    "Гость доволен обслуживанием.",
+    "Гость заказал премиальный стол.",
+    "Гость оставил хороший отзыв.",
+    "Гость заинтересовался VIP-программой."
+  ];
+
+  const text =
+    actions[
+      Math.floor(
+        Math.random()*actions.length
+      )
+    ];
+
+  const earn =
+    Math.floor(Math.random()*7000)+3000;
+
+  showDialog(
+    "👥 " + name,
+    text,
+    [
+      {
+        text:"Продолжить",
+        class:"primary",
+        action:()=>{
+
+          money += earn;
+          income += earn;
+          totalEarned += earn;
+
+          reputation =
+            Math.min(100,reputation+1);
+
+          log(
+            `${name} принёс клубу ₽${fmt(earn)}.`
+          );
+
+          toast(
+            "+₽" + fmt(earn)
+          );
+
+          update();
+
+        }
+      },
+
+      {
+        text:"Отказать"
+      }
+    ]
+  );
+
+}
+
+
+/* =====================================================
+   ROOMS
+===================================================== */
+
+function enterRoom(room){
+
+  mood =
+    Math.min(100,mood+2);
+
+  log(
+    `Ты посетил зону: ${room}.`
+  );
+
+  toast(
+    "Ты вошёл: " + room
+  );
+
+  update();
+
+}
+
+
+/* =====================================================
+   UPGRADES
+===================================================== */
+
+function buyUpgrade(name,cost){
+
+  if(money < cost){
+
+    toast(
+      "Недостаточно средств"
+    );
+
+    return;
+
+  }
+
+  money -= cost;
+
+  reputation =
+    Math.min(100,reputation+2);
+
+  income += cost * .2;
+
+  totalEarned += cost * .2;
+
+  if(name === "Свет")
+    atmosphere =
+      Math.min(100,atmosphere+7);
+
+  if(name === "Звук")
+    atmosphere =
+      Math.min(100,atmosphere+9);
+
+  if(name === "Бар")
+    service =
+      Math.min(100,service+8);
+
+  if(name === "VIP")
+    popularity =
+      Math.min(100,popularity+7);
+
+  if(name === "Охрана")
+    security =
+      Math.min(100,security+9);
+
+  if(name === "Медиа")
+    popularity =
+      Math.min(100,popularity+10);
+
+  if(name === "Танцпол")
+    atmosphere =
+      Math.min(100,atmosphere+7);
+
+  if(name === "Сцена")
+    reputation =
+      Math.min(100,reputation+3);
+
+  addXP(8);
+
+  log(
+    `Клуб получил улучшение: ${name}.`
+  );
+
+  toast(
+    "⚡ " + name + " улучшен"
+  );
+
+  update();
+
+}
+
+
+/* =====================================================
+   MISSIONS
+===================================================== */
+
+function mission(type){
+
+  if(type === "бар"){
+
+    money += 8000;
+    income += 8000;
+    totalEarned += 8000;
+
+    reputation =
+      Math.min(100,reputation+2);
+
+    addXP(10);
+
+    log(
+      'Задание "Бармен вечера" выполнено.'
+    );
+
+    toast(
+      "+₽8 000 • +2 ★"
+    );
+
+  }
+
+  if(type === "VIP"){
+
+    money += 15000;
+    income += 15000;
+    totalEarned += 15000;
+
+    vipCount++;
+
+    addXP(12);
+
+    log(
+      "VIP-задание выполнено."
+    );
+
+    toast(
+      "+₽15 000"
+    );
+
+  }
+
+  if(type === "мероприятие"){
+
+    reputation =
+      Math.min(100,reputation+5);
+
+    visitors += 40;
+
+    popularity =
+      Math.min(100,popularity+5);
+
+    addXP(10);
+
+    log(
+      "Мероприятие успешно проведено."
+    );
+
+    toast(
+      "+5 ★"
+    );
+
+  }
+
+  if(type === "отношения"){
+
+    reputation =
+      Math.min(100,reputation+1);
+
+    addXP(8);
+
+    log(
+      "Личная встреча состоялась."
+    );
+
+    toast(
+      "❤️ Отношения улучшены"
+    );
+
+  }
+
+  if(type === "music"){
+
+    atmosphere =
+      Math.min(100,atmosphere+7);
+
+    money += 6500;
+    income += 6500;
+    totalEarned += 6500;
+
+    reputation =
+      Math.min(100,reputation+3);
+
+    addXP(8);
+
+    log(
+      "🎵 Музыкальное задание выполнено."
+    );
+
+    toast(
+      "+₽6 500 • +3 ★"
+    );
+
+  }
+
+  if(type === "guests"){
+
+    if(visitors >= 300){
+
+      money += 12000;
+      income += 12000;
+      totalEarned += 12000;
+
+      addXP(12);
+
+      log(
+        "👥 Задание полного зала выполнено."
+      );
+
+      toast(
+        "+₽12 000"
+      );
+
+    }else{
+
+      toast(
+        "Пока только " +
+        visitors +
+        " из 300 гостей"
+      );
+
+    }
+
+  }
+
+  update();
+
+}
+
+
+/* =====================================================
+   MUSIC
+===================================================== */
+
+const audio =
+  $("musicAudio");
+
+
+function toggleMusic(){
+
+  if(audio.paused){
+
+    audio.play()
+      .then(()=>{
+
+        $("musicStatus").textContent =
+          "Музыка играет: " +
+          tracks[musicIndex];
+
+        toast(
+          "🎵 Музыка включена"
+        );
+
+      })
+      .catch(()=>{
+
+        toast(
+          "Нажми кнопку ещё раз для запуска музыки"
+        );
+
+      });
+
+  }else{
+
+    audio.pause();
+
+    $("musicStatus").textContent =
+      "Музыка остановлена";
+
+  }
+
+}
+
+
+function selectTrack(index){
+
+  musicIndex = index;
+
+  $("trackName").textContent =
+    tracks[index];
+
+  $("musicStatus").textContent =
+    "Выбран трек: " +
+    tracks[index];
+
+  if(!audio.paused){
+
+    audio.currentTime = 0;
+
+    audio.play()
+      .catch(()=>{});
+
+  }
+
+  log(
+    "DJ выбрал трек: " +
+    tracks[index]
+  );
+
+}
+
+
+function nextTrack(){
+
+  musicIndex =
+    (musicIndex+1) %
+    tracks.length;
+
+  selectTrack(musicIndex);
+
+}
+
+
+function djBoost(){
+
+  if(money < 8000){
+
+    toast(
+      "Нужно ₽8 000"
+    );
+
+    return;
+
+  }
+
+  money -= 8000;
+
+  atmosphere =
+    Math.min(100,atmosphere+12);
+
+  mood =
+    Math.min(100,mood+8);
+
+  visitors += 25;
+
+  reputation =
+    Math.min(100,reputation+2);
+
+  addXP(8);
+
+  log(
+    "🔊 DJ Boost активирован."
+  );
+
+  toast(
+    "🔊 Танцпол разогрет!"
+  );
+
+  update();
+
+}
+
+
+$("volume").addEventListener(
+  "input",
+  e => {
+    audio.volume =
+      Number(e.target.value);
+  }
+);
+
+
+$("volume2").addEventListener(
+  "input",
+  e => {
+    audio.volume =
+      Number(e.target.value)/100;
+  }
+);
+
+
+/* =====================================================
+   ACHIEVEMENTS
+===================================================== */
+
+function checkAchievements(){
+
+  if(soldCount >= 50){
+
+    $("achBar").textContent =
+      "Получено";
+
+    $("achBar").className =
+      "good";
+
+  }
+
+  if(vipCount >= 10){
+
+    $("achVip").textContent =
+      "Получено";
+
+    $("achVip").className =
+      "good";
+
+  }
+
+  if(reputation >= 100){
+
+    $("achRep").textContent =
+      "Получено";
+
+    $("achRep").className =
+      "good";
+
+  }
+
+  if(totalEarned >= 1000000){
+
+    $("achMoney").textContent =
+      "Получено";
+
+    $("achMoney").className =
+      "good";
+
+  }
+
+}
+
+
+/* =====================================================
+   AUTOMATIC CLUB LIFE
+===================================================== */
+
+setInterval(()=>{
+
+  if(document.hidden)
+    return;
+
+  const gain =
+    Math.floor(Math.random()*1800)+400;
+
+  money += gain;
+
+  income += gain;
+
+  totalEarned += gain;
+
+  if(Math.random() < .35){
+
+    visitors +=
+      Math.floor(Math.random()*6);
+
+  }
+
+  if(Math.random() < .20){
+
+    mood =
+      Math.max(
+        0,
+        Math.min(
+          100,
+          mood +
+          (Math.random()>.5 ? 1 : -1)
+        )
+      );
+
+  }
+
+  if(Math.random() < .15){
+
+    atmosphere =
+      Math.max(
+        0,
+        Math.min(
+          100,
+          atmosphere +
+          (Math.random()>.5 ? 1 : -1)
+        )
+      );
+
+  }
+
+  update();
+
+},12000);
+
+
+/* =====================================================
+   RANDOM EVENTS
+===================================================== */
+
+setInterval(()=>{
+
+  if(document.hidden)
+    return;
+
+  if(Math.random() < .16){
+
+    randomEvent();
+
+  }
+
+},30000);
+
+
+/* =====================================================
+   CLOCK
+===================================================== */
+
+function updateClock(){
+
+  const d = new Date();
+
+  const time =
+    d.toLocaleTimeString(
+      "ru-RU",
+      {
+        hour:"2-digit",
+        minute:"2-digit"
+      }
+    );
+
+  const day =
+    d.toLocaleDateString(
+      "ru-RU",
+      {
+        weekday:"long"
+      }
+    );
+
+  $("clockText").textContent =
+    day.charAt(0).toUpperCase() +
+    day.slice(1) +
+    " • " +
+    time +
+    " • Клуб открыт";
+
+}
+
+
+setInterval(
+  updateClock,
+  1000
+);
+
+
+/* =====================================================
+   CLOSE DIALOG BY BACKGROUND
+===================================================== */
+
+$("dialog").addEventListener(
+  "click",
+  e => {
+
+    if(e.target === $("dialog")){
+      closeDialog();
+    }
+
+  }
+);
+
+
+/* =====================================================
+   INIT
+===================================================== */
+
+loadGame();
+
+audio.volume = .6;
+
+updateRelationshipUI();
+
+updateClock();
+
+update();
+
+</script>
+
+</body>
+</html>
